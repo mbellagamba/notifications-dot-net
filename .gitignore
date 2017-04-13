@@ -1,0 +1,17 @@
+# User-specific files
+*.suo
+*.user
+
+# Build results
+bin/
+obj/
+
+# Publish directory
+Properties/PublishProfiles
+
+# NuGet Packages
+packages/**
+!packages/repositories.config
+
+# Certificates directory
+Certificates
