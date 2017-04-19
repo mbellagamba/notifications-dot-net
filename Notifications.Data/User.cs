@@ -17,5 +17,6 @@
 
         public virtual ICollection<Group> Groups { get; set; }
         public virtual ICollection<Device> Devices { get; set; }
+        public virtual ICollection<Notification> Notifications { get; set; }
     }
 }

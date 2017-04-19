@@ -4,25 +4,17 @@ using Notifications.Data;
 
 namespace Notifications.Push
 {
-    public class NotificationManager
+    public class Sender
     {
         private string certificatePath;
         private string certificatePassword;
         private NotificationsModel db;
 
-        public NotificationManager(NotificationsModel db, string certificatePath, string certificatePassword)
+        public Sender(NotificationsModel db, string certificatePath, string certificatePassword)
         {
             this.db = db;
             this.certificatePath = certificatePath;
             this.certificatePassword = certificatePassword;
-        }
-
-        public NotificationManager()
-        {
-            // Prefer the other constructor
-            this.db = new NotificationsModel();
-            this.certificatePath = "";
-            this.certificatePassword = "";
         }
 
         /// <summary>

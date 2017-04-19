@@ -26,24 +26,19 @@ namespace Notifications.Data.Migrations
             Device d1 = new Device() { IsTablet = false, Type = 0, Owner = u1, IdentifierForVendor = "ciao1" };
             Device d2 = new Device() { IsTablet = false, Type = 0, Owner = u2, IdentifierForVendor = "ciao2" };
             Device d3 = new Device() { IsTablet = false, Type = 0, Owner = u3, IdentifierForVendor = "ciao", Token = "906ada2609ecad13f5cff1ae21d4723b559831400c9d97c0efb1b6701450cf3f" };
-            Product p0 = new Product() { Code = "0000", Color = "blue", Name = "life", Type = "purchase" };
-            Product p1 = new Product() { Code = "0001", Color = "blue", Name = "powers", Type = "subscription" };
-            Product p2 = new Product() { Code = "0002", Color = "red", Name = "bombs", Type = "purchase" };
-            Product p3 = new Product() { Code = "0003", Color = "black", Name = "shield", Type = "purchase" };
+            Product p0 = new Product() { Code = "0000", Color = "blue", Name = "life", Type = "purchase", Price = 0.99 };
+            Product p1 = new Product() { Code = "0001", Color = "blue", Name = "powers", Type = "subscription", Price = 1.99 };
+            Product p2 = new Product() { Code = "0002", Color = "red", Name = "bombs", Type = "purchase", Price = 0.49 };
+            Product p3 = new Product() { Code = "0003", Color = "black", Name = "shield", Type = "purchase", Price = 0.49 };
+            Notification n0 = new Notification() { Builder = "product", Title = "Product {{product_name}} on sale", Message = "Click here to see the product", Product = p0, Condition = "low_price" };
+            n0.Receivers.Add(u1);
+            n0.Receivers.Add(u2);
+            n0.Receivers.Add(u3);
             context.Groups.AddOrUpdate(g => g.Name, g1, g2);
             context.Users.AddOrUpdate(u => u.Name, u1, u2, u3);
             context.Devices.AddOrUpdate(d => d.IdentifierForVendor, d1, d2, d3);
             context.Products.AddOrUpdate(p => p.Code, p0, p1, p2, p3);
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
+            context.Notifications.AddOrUpdate(n => n.Builder, n0);
         }
     }
 }

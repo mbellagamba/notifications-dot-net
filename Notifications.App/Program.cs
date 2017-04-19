@@ -14,21 +14,17 @@ namespace Notifications.App
         {
             string certificatesFolder = System.Configuration.ConfigurationManager.AppSettings["certificate_path"];
             string certificatesPassword = System.Configuration.ConfigurationManager.AppSettings["certificate_password"];
-            NotificationPayload n = new NotificationPayload()
-            {
-                Title = "Test notification",
-                Message = "This is just a test notification.",
-                ObjectId = 1,
-                Action = ""
-            };
             using (var db = new NotificationsModel())
             {
-                User user = db.Users.FirstOrDefault(u => u.Name.ToLower().Contains("riccardo"));
-                if (user != null)
-                {
-                    NotificationManager notificationManager = new NotificationManager(db, certificatesFolder, certificatesPassword);
-                    notificationManager.Send(n, new User[] { user });
-                }
+                Product p0 = db.Products.Find(1);
+                p0.Price = 0.49;
+                db.SaveChanges();
+                Sender sender = new Sender(db, certificatesFolder, certificatesPassword);
+                NotificationTrigger trigger = new NotificationTrigger(sender, db.Notifications);
+                trigger.TriggerIfNeeded();
+
+                p0.Price = 0.99;
+                db.SaveChanges();
             }
             Console.ReadKey();
         }

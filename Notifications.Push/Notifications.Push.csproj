@@ -81,16 +81,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApsNotification.cs" />
+    <Compile Include="Builders\DefaultNotificationBuilder.cs" />
+    <Compile Include="Builders\INotificationBuilder.cs" />
+    <Compile Include="Builders\NotificationBuildersFactory.cs" />
+    <Compile Include="Builders\ProductNotificationBuilder.cs" />
+    <Compile Include="iOS\ApsNotification.cs" />
     <Compile Include="DeviceRepository.cs" />
-    <Compile Include="INotificationCondition.cs" />
-    <Compile Include="INotificationService.cs" />
-    <Compile Include="IOSAlert.cs" />
-    <Compile Include="IOSNotification.cs" />
-    <Compile Include="IOSNotificationService.cs" />
-    <Compile Include="NotificationManager.cs" />
+    <Compile Include="NotificationCondition\DefaultNotificationCondition.cs" />
+    <Compile Include="NotificationCondition\INotificationCondition.cs" />
+    <Compile Include="NotificationCondition\LowPriceNotificationCondition.cs" />
+    <Compile Include="NotificationCondition\NotificationConditionsFactory.cs" />
+    <Compile Include="Services\INotificationService.cs" />
+    <Compile Include="iOS\IOSAlert.cs" />
+    <Compile Include="iOS\IOSNotification.cs" />
+    <Compile Include="iOS\IOSNotificationService.cs" />
+    <Compile Include="Sender.cs" />
     <Compile Include="NotificationPayload.cs" />
-    <Compile Include="NotificationServiceFactory.cs" />
+    <Compile Include="Services\NotificationServiceFactory.cs" />
     <Compile Include="NotificationTrigger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -104,6 +111,7 @@
       <Name>Notifications.Data</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -7,22 +7,29 @@ using Notifications.Data;
 
 namespace Notifications.Push
 {
-    class NotificationTrigger
+    public class NotificationTrigger
     {
-        private NotificationManager manager;
-        public INotificationCondition Condition { get; set; }
-        public IEnumerable<User> Receivers { get; set; }
+        private Sender sender;
+        private IEnumerable<Notification> notifications;
 
-        public NotificationTrigger(NotificationManager manager)
+        public NotificationTrigger(Sender sender, IEnumerable<Notification> notifications)
         {
-            this.manager = manager;
+            this.sender = sender;
+            this.notifications = notifications;
         }
 
-        public void SendIfNeeded()
+        public void TriggerIfNeeded()
         {
-            if(Condition != null && Condition.isVerified())
+            IEnumerable<Notification> triggeredNotifications = this.notifications
+                .Where(n =>
+                {
+                    INotificationCondition condition = NotificationConditionsFactory.Make(n);
+                    return condition.isVerified();
+                });
+            foreach(Notification notification in triggeredNotifications)
             {
-                //manager.Send()
+                INotificationBuilder builder = NotificationBuildersFactory.Make(notification.Builder);
+                sender.Send(builder.Build(notification), notification.Receivers);
             }
         }
     }

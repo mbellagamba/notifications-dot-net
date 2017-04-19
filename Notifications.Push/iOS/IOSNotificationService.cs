@@ -23,6 +23,8 @@ namespace Notifications.Push
 
         public void Send(NotificationPayload notification, Device device)
         {
+            if (string.IsNullOrEmpty(device.Token)) return;
+
             // Configuration (NOTE: .pfx can also be used here)
             ApnsConfiguration config = new ApnsConfiguration(ApnsConfiguration.ApnsServerEnvironment.Sandbox, certificatePath, certificatePassword);
             ApnsServiceBroker apnsBroker = new ApnsServiceBroker(config);

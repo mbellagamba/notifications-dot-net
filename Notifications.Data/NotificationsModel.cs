@@ -15,15 +15,29 @@ namespace Notifications.Data
         public virtual DbSet<Group> Groups { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Device> Devices { get; set; }
+        public virtual DbSet<Notification> Notifications { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Group>().HasMany(g => g.Members).WithMany(u => u.Groups).Map(m => m.MapLeftKey("GroupId").MapRightKey("UserId").ToTable("Memberships"));
+            modelBuilder.Entity<Group>()
+                .HasMany(g => g.Members)
+                .WithMany(u => u.Groups)
+                .Map(m => m.MapLeftKey("GroupId").MapRightKey("UserId").ToTable("Memberships"));
 
-            //modelBuilder.Entity<Device>().HasRequired(d => d.Owner).WithMany(u => u.Devices).Map(m => m.MapKey("UserId"));
-            modelBuilder.Entity<User>().HasMany(u => u.Devices).WithRequired(d => d.Owner).Map(m => m.MapKey("UserId"));
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Devices)
+                .WithRequired(d => d.Owner)
+                .Map(m => m.MapKey("UserId"));
 
-            modelBuilder.Entity<Product>().HasMany(p => p.Notifications).WithRequired(n => n.Product).Map(m => m.MapKey("ProductId"));
+            modelBuilder.Entity<Product>()
+                .HasMany(p => p.Notifications)
+                .WithRequired(n => n.Product)
+                .Map(m => m.MapKey("ProductId"));
+
+            modelBuilder.Entity<Notification>()
+                .HasMany(n => n.Receivers)
+                .WithMany(u => u.Notifications)
+                .Map(m => m.MapLeftKey("NotificationId").MapRightKey("UserId").ToTable("NotificationsReceivers"));
         }
     }
 }

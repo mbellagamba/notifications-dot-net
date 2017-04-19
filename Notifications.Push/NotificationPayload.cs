@@ -11,6 +11,7 @@ namespace Notifications.Push
         public int Id { get; set; }
         public string Title { get; set; }
         public string Message { get; set; }
+        public string Sound { get; set; }
         public string Action { get; set; }
         public int ObjectId { get; set; }
 

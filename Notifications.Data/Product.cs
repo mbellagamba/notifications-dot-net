@@ -12,6 +12,7 @@ namespace Notifications.Data
         public string Code { get; set; }
         public string Type { get; set; }
         public string Color { get; set; }
+        public double Price { get; set; }
 
         public virtual ICollection<Notification> Notifications { get; set; }
     }

@@ -64,7 +64,7 @@ namespace Notifications.Push
             ApsNotification aps = new ApsNotification()
             {
                 Alert = alert,
-                Sound = ApsNotification.DEFAULT_SOUND
+                Sound = string.IsNullOrEmpty(notification.Sound) ? ApsNotification.DEFAULT_SOUND : notification.Sound
             };
             this.Aps = aps;
             var info = GenerateInfo(notification);
