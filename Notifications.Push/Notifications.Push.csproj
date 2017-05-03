@@ -84,12 +84,13 @@
     <Compile Include="Builders\DefaultNotificationBuilder.cs" />
     <Compile Include="Builders\INotificationBuilder.cs" />
     <Compile Include="Builders\NotificationBuildersFactory.cs" />
-    <Compile Include="Builders\ProductNotificationBuilder.cs" />
+    <Compile Include="IDevice.cs" />
+    <Compile Include="INotification.cs" />
+    <Compile Include="INotificationObject.cs" />
     <Compile Include="iOS\ApsNotification.cs" />
-    <Compile Include="DeviceRepository.cs" />
+    <Compile Include="IReceiver.cs" />
     <Compile Include="NotificationCondition\DefaultNotificationCondition.cs" />
     <Compile Include="NotificationCondition\INotificationCondition.cs" />
-    <Compile Include="NotificationCondition\LowPriceNotificationCondition.cs" />
     <Compile Include="NotificationCondition\NotificationConditionsFactory.cs" />
     <Compile Include="Services\INotificationService.cs" />
     <Compile Include="iOS\IOSAlert.cs" />
@@ -104,12 +105,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Notifications.Data\Notifications.Data.csproj">
-      <Project>{e876e91f-a475-4b6f-805d-551496a96e2f}</Project>
-      <Name>Notifications.Data</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

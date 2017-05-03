@@ -1,5 +1,4 @@
-﻿using Notifications.Data;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,28 +6,42 @@ using System.Threading.Tasks;
 
 namespace Notifications.Push
 {
-    enum CONDITION_TYPE
-    {
-        LOW_PRICE
-    }
 
-    class NotificationConditionsFactory
+    public sealed class NotificationConditionsFactory
     {
-        public static INotificationCondition Make(Notification notification)
+        private static readonly NotificationConditionsFactory instance = new NotificationConditionsFactory();
+        private Dictionary<string, Type> conditions;
+
+        private NotificationConditionsFactory()
         {
-            CONDITION_TYPE conditionType;
-            Enum.TryParse(notification.Condition, out conditionType);
+            conditions = new Dictionary<string, Type>();
+        }
+
+        public static NotificationConditionsFactory Instance
+        {
+            get { return instance; }
+        }
+
+        public void Register<Condition>(string key) where Condition : INotificationCondition
+        {
+            conditions.Add(key, typeof(Condition));
+        }
+
+        public INotificationCondition Create(INotification notification)
+        {
+            string conditionKey = notification.Condition;
             INotificationCondition condition;
-            switch(conditionType)
+            if (conditions.ContainsKey(conditionKey))
             {
-                case CONDITION_TYPE.LOW_PRICE:
-                    condition = new LowPriceNotificationCondition(notification);
-                    break;
-                default:
-                    condition = new DefaultNotificationCondition();
-                    break;
+                condition = (INotificationCondition)Activator.CreateInstance(conditions[conditionKey]);
             }
+            else
+            {
+                condition = new DefaultNotificationCondition();
+            }
+            condition.Notification = notification;
             return condition;
         }
+
     }
 }

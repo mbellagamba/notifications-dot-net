@@ -2,11 +2,6 @@
 using PushSharp.Apple;
 using PushSharp.Core;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Notifications.Data;
 
 namespace Notifications.Push
 {
@@ -21,7 +16,7 @@ namespace Notifications.Push
             this.certificatePassword = certificatePassword;
         }
 
-        public void Send(NotificationPayload notification, Device device)
+        public void Send(NotificationPayload notification, IDevice device)
         {
             if (string.IsNullOrEmpty(device.Token)) return;
 
@@ -62,12 +57,12 @@ namespace Notifications.Push
                     // Deal with the failed notification
                     ApnsNotification failedNotification = notificationException.Notification;
                     ApnsNotificationErrorStatusCode statusCode = notificationException.ErrorStatusCode;
-                    Console.WriteLine("Notification not sent.", notificationException);
+                    Console.WriteLine("Notification not sent." + notificationException.ToString());
                 }
                 else
                 {
                     // Inner exception might hold more useful information like an ApnsConnectionException     
-                    Console.WriteLine("Notification not sent.", ex);
+                    Console.WriteLine("Notification not sent." + ex.Message);
                 }
 
                 // Mark it as handled

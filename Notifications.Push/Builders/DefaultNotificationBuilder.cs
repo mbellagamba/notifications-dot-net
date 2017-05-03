@@ -1,21 +1,14 @@
-﻿using Notifications.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Notifications.Push
+﻿namespace Notifications.Push
 {
     class DefaultNotificationBuilder : INotificationBuilder
     {
-        public NotificationPayload Build(Notification notification)
+        public NotificationPayload Build(INotification notification)
         {
             NotificationPayload payload = new NotificationPayload()
             {
                 Title = notification.Title,
                 Message = notification.Message,
-                ObjectId = notification.Product.Id
+                ObjectId = notification.Object.Id
             };
 
             if (!string.IsNullOrEmpty(notification.Sound))

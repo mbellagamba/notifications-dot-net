@@ -14,19 +14,32 @@ namespace Notifications.App
         {
             string certificatesFolder = System.Configuration.ConfigurationManager.AppSettings["certificate_path"];
             string certificatesPassword = System.Configuration.ConfigurationManager.AppSettings["certificate_password"];
+
+            InitFactories();
+
             using (var db = new NotificationsModel())
             {
                 Product p0 = db.Products.Find(1);
                 p0.Price = 0.49;
                 db.SaveChanges();
-                Sender sender = new Sender(db, certificatesFolder, certificatesPassword);
+                NotificationsSender sender = new NotificationsSender(certificatesFolder, certificatesPassword);
                 NotificationTrigger trigger = new NotificationTrigger(sender, db.Notifications);
                 trigger.TriggerIfNeeded();
 
+                // Restore the normal state
                 p0.Price = 0.99;
                 db.SaveChanges();
             }
             Console.ReadKey();
+        }
+
+        private static void InitFactories()
+        {
+            NotificationBuildersFactory bFactory = NotificationBuildersFactory.Instance;
+            bFactory.Register<ProductNotificationBuilder>("product");
+
+            NotificationConditionsFactory cFactory = NotificationConditionsFactory.Instance;
+            cFactory.Register<LowPriceNotificationCondition>("low_price");
         }
     }
 }

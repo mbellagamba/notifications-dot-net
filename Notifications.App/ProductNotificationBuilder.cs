@@ -1,24 +1,18 @@
-﻿using Notifications.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Notifications.Push
+﻿using Notifications.Push;
+namespace Notifications.App
 {
     class ProductNotificationBuilder : INotificationBuilder
     {
         private const string NAME_PLACEHOLDER = "{{product_name}}";
 
-        public NotificationPayload Build(Notification notification)
+        public NotificationPayload Build(INotification notification)
         {
-            string title = notification.Title.Replace(NAME_PLACEHOLDER, notification.Product.Name);
+            string title = notification.Title.Replace(NAME_PLACEHOLDER, notification.Object.Name);
             NotificationPayload payload = new NotificationPayload()
             {
                 Title = title,
                 Message = notification.Message,
-                ObjectId = notification.Product.Id
+                ObjectId = notification.Object.Id
             };
 
             if (!string.IsNullOrEmpty(notification.Sound))

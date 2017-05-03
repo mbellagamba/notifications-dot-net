@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Notifications.Push
+﻿namespace Notifications.Push
 {
-    interface INotificationCondition
+    public interface INotificationCondition
     {
+        INotification Notification { get; set; }
         /// <summary>
         /// Should check if an event has happened.
         /// </summary>

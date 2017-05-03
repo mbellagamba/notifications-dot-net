@@ -1,29 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Notifications.Data;
 
 namespace Notifications.Push
 {
-    public class Sender
+    public class NotificationsSender
     {
         private string certificatePath;
         private string certificatePassword;
-        private NotificationsModel db;
 
-        public Sender(NotificationsModel db, string certificatePath, string certificatePassword)
+        public NotificationsSender(string certificatePath, string certificatePassword)
         {
-            this.db = db;
             this.certificatePath = certificatePath;
             this.certificatePassword = certificatePassword;
-        }
-
-        /// <summary>
-        /// Send a broadcast notification. Send the notification to each device in the database.
-        /// </summary>
-        /// <param name="notification">The notification to send.</param>
-        public void Send(NotificationPayload notification)
-        {
-            Send(notification, db.Devices);
         }
 
         /// <summary>
@@ -31,9 +19,9 @@ namespace Notifications.Push
         /// </summary>
         /// <param name="notification">The notification to send.</param>
         /// <param name="users">The list of receivers</param>
-        public void Send(NotificationPayload notification, IEnumerable<User> users)
+        public void Send(NotificationPayload notification, IEnumerable<IReceiver> users)
         {
-            Send(notification, users.SelectMany(u => u.Devices).Distinct());
+            Send(notification, users.SelectMany(u => u.NotificationDevices).Distinct());
         }
 
         /// <summary>
@@ -41,10 +29,10 @@ namespace Notifications.Push
         /// </summary>
         /// <param name="notification">The notification to send.</param>
         /// <param name="devices">The list of devices to which send the notification.</param>
-        private void Send(NotificationPayload notification, IEnumerable<Device> devices)
+        private void Send(NotificationPayload notification, IEnumerable<IDevice> devices)
         {
             INotificationService notificationService;
-            foreach (Device device in devices)
+            foreach (IDevice device in devices)
             {
                 notificationService = NotificationServiceFactory.Make(device.Type, certificatePath, certificatePassword);
                 if (notificationService != null)

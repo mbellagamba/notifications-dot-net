@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Notifications.Push
+﻿namespace Notifications.Push
 {
     enum OS_TYPE
     {
@@ -18,12 +12,14 @@ namespace Notifications.Push
         {
             OS_TYPE os = (OS_TYPE)osType;
             INotificationService service;
-            switch(os)
+            switch (os)
             {
                 case OS_TYPE.IOS:
                     if (string.IsNullOrEmpty(certificatesFolderPath)) return null;
                     service = new IOSNotificationService(certificatesFolderPath, certificatesPassword);
                     break;
+                case OS_TYPE.ANDROID:
+                    // TODO: implement the AndroidNotificationService and return it.
                 default:
                     service = null;
                     break;

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using Notifications.Data;
 
-namespace Notifications.Push
+namespace Notifications.App
 {
     public class DeviceRepository
     {

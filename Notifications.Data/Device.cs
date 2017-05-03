@@ -1,6 +1,6 @@
 ﻿namespace Notifications.Data
 {
-    public partial class Device
+    public partial class Device : Notifications.Push.IDevice
     {
         public int Id { get; set; }
         public string IdentifierForVendor { get; set; }

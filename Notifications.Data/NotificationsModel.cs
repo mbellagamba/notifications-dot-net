@@ -35,7 +35,7 @@ namespace Notifications.Data
                 .Map(m => m.MapKey("ProductId"));
 
             modelBuilder.Entity<Notification>()
-                .HasMany(n => n.Receivers)
+                .HasMany(n => n.Users)
                 .WithMany(u => u.Notifications)
                 .Map(m => m.MapLeftKey("NotificationId").MapRightKey("UserId").ToTable("NotificationsReceivers"));
         }

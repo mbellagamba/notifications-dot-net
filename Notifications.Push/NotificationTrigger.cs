@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Notifications.Data;
 
 namespace Notifications.Push
 {
     public class NotificationTrigger
     {
-        private Sender sender;
-        private IEnumerable<Notification> notifications;
+        private NotificationsSender sender;
+        private IEnumerable<INotification> notifications;
 
-        public NotificationTrigger(Sender sender, IEnumerable<Notification> notifications)
+        public NotificationTrigger(NotificationsSender sender, IEnumerable<INotification> notifications)
         {
             this.sender = sender;
             this.notifications = notifications;
@@ -20,15 +19,17 @@ namespace Notifications.Push
 
         public void TriggerIfNeeded()
         {
-            IEnumerable<Notification> triggeredNotifications = this.notifications
+            NotificationConditionsFactory conditionsFactory = NotificationConditionsFactory.Instance;
+            NotificationBuildersFactory buildersFactory = NotificationBuildersFactory.Instance;
+            IEnumerable<INotification> triggeredNotifications = this.notifications
                 .Where(n =>
                 {
-                    INotificationCondition condition = NotificationConditionsFactory.Make(n);
+                    INotificationCondition condition = conditionsFactory.Create(n);
                     return condition.isVerified();
                 });
-            foreach(Notification notification in triggeredNotifications)
+            foreach (INotification notification in triggeredNotifications)
             {
-                INotificationBuilder builder = NotificationBuildersFactory.Make(notification.Builder);
+                INotificationBuilder builder = buildersFactory.Create(notification.Builder);
                 sender.Send(builder.Build(notification), notification.Receivers);
             }
         }

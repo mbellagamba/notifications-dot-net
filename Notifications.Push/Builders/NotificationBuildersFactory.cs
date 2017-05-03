@@ -1,31 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Notifications.Push
 {
-    enum BUILDER_TYPE
+    public sealed class NotificationBuildersFactory
     {
-        PRODUCT, DEFAULT
-    }
+        private static readonly NotificationBuildersFactory instance = new NotificationBuildersFactory();
+        private Dictionary<string, Type> builders;
 
-    class NotificationBuildersFactory
-    {
-        public static INotificationBuilder Make(string type)
+        private NotificationBuildersFactory()
         {
-            BUILDER_TYPE builderType;
-            Enum.TryParse(type, out builderType);
+            builders = new Dictionary<string, Type>();
+        }
+
+        public static NotificationBuildersFactory Instance
+        {
+            get { return instance; }
+        }
+
+        public void Register<Builder>(string key) where Builder : INotificationBuilder
+        {
+            builders.Add(key, typeof(Builder));
+        }
+
+        public INotificationBuilder Create(string builderKey)
+        {
             INotificationBuilder builder;
-            switch(builderType)
+            if (builders.ContainsKey(builderKey))
             {
-                case BUILDER_TYPE.PRODUCT:
-                    builder = new ProductNotificationBuilder();
-                    break;
-                default:
-                    builder = new DefaultNotificationBuilder();
-                    break;
+                builder = (INotificationBuilder)Activator.CreateInstance(builders[builderKey]);
+            }
+            else
+            {
+                builder = new DefaultNotificationBuilder();
             }
             return builder;
         }

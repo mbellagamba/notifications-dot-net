@@ -70,6 +70,12 @@
       <DependentUpon>201704132020477_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Notifications.Push\Notifications.Push.csproj">
+      <Project>{89f9471a-0421-4b9d-b430-8f70a2ba91f0}</Project>
+      <Name>Notifications.Push</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

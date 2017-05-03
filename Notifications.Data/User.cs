@@ -1,9 +1,11 @@
 ﻿namespace Notifications.Data
 {
+    using Notifications.Push;
     using System.Collections.Generic;
 
-    public class User
+    public class User : IReceiver
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
             Groups = new HashSet<Group>();
@@ -18,5 +20,10 @@
         public virtual ICollection<Group> Groups { get; set; }
         public virtual ICollection<Device> Devices { get; set; }
         public virtual ICollection<Notification> Notifications { get; set; }
+
+        public IEnumerable<IDevice> NotificationDevices
+        {
+            get { return Devices as IEnumerable<IDevice>; }
+        }
     }
 }

@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Notifications.Data
 {
-    public class Product
+    public class Product : Notifications.Push.INotificationObject
     {
         public int Id { get; set; }
         public string Name { get; set; }

@@ -1,15 +1,17 @@
 ﻿namespace Notifications.Data
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.Linq;
+    using Notifications.Push;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
-    public class Notification
+    public class Notification : INotification
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Notification()
         {
-            Receivers = new HashSet<User>();
+            Users = new HashSet<User>();
         }
 
         public int Id { get; set; }
@@ -24,6 +26,16 @@
 
         public virtual Product Product { get; set; }
 
-        public virtual ICollection<User> Receivers { get; set; }
+        public virtual ICollection<User> Users { get; set; }
+
+        public INotificationObject Object
+        {
+            get { return Product; }
+        }
+
+        public IEnumerable<IReceiver> Receivers
+        {
+            get { return Users as IEnumerable<IReceiver>; }
+        }
     }
 }
