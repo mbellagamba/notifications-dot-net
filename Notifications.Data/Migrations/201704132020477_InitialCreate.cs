@@ -23,24 +23,19 @@ namespace Notifications.Data.Migrations
                 .Index(t => t.UserId);
             
             CreateTable(
-                "dbo.Users",
+                "dbo.DeviceNotifications",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
-                        Name = c.String(),
-                        Udid = c.String(),
-                        Email = c.String(),
+                        DeviceId = c.Int(nullable: false),
+                        NotificationId = c.Int(nullable: false),
+                        Active = c.Boolean(nullable: false),
+                        NotifiedAt = c.DateTime(nullable: false),
                     })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
-                "dbo.Groups",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Name = c.String(),
-                    })
-                .PrimaryKey(t => t.Id);
+                .PrimaryKey(t => new { t.DeviceId, t.NotificationId })
+                .ForeignKey("dbo.Devices", t => t.DeviceId, cascadeDelete: true)
+                .ForeignKey("dbo.Notifications", t => t.NotificationId, cascadeDelete: true)
+                .Index(t => t.DeviceId)
+                .Index(t => t.NotificationId);
             
             CreateTable(
                 "dbo.Notifications",
@@ -53,6 +48,7 @@ namespace Notifications.Data.Migrations
                         Action = c.String(),
                         Condition = c.String(nullable: false),
                         Builder = c.String(nullable: false),
+                        RefreshTime = c.String(),
                         ProductId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
@@ -73,6 +69,26 @@ namespace Notifications.Data.Migrations
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
+                "dbo.Users",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Name = c.String(),
+                        Udid = c.String(),
+                        Email = c.String(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.Groups",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Name = c.String(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
                 "dbo.Memberships",
                 c => new
                     {
@@ -85,41 +101,28 @@ namespace Notifications.Data.Migrations
                 .Index(t => t.GroupId)
                 .Index(t => t.UserId);
             
-            CreateTable(
-                "dbo.NotificationsReceivers",
-                c => new
-                    {
-                        NotificationId = c.Int(nullable: false),
-                        UserId = c.Int(nullable: false),
-                    })
-                .PrimaryKey(t => new { t.NotificationId, t.UserId })
-                .ForeignKey("dbo.Notifications", t => t.NotificationId, cascadeDelete: true)
-                .ForeignKey("dbo.Users", t => t.UserId, cascadeDelete: true)
-                .Index(t => t.NotificationId)
-                .Index(t => t.UserId);
-            
         }
         
         public override void Down()
         {
-            DropForeignKey("dbo.NotificationsReceivers", "UserId", "dbo.Users");
-            DropForeignKey("dbo.NotificationsReceivers", "NotificationId", "dbo.Notifications");
-            DropForeignKey("dbo.Notifications", "ProductId", "dbo.Products");
             DropForeignKey("dbo.Memberships", "UserId", "dbo.Users");
             DropForeignKey("dbo.Memberships", "GroupId", "dbo.Groups");
             DropForeignKey("dbo.Devices", "UserId", "dbo.Users");
-            DropIndex("dbo.NotificationsReceivers", new[] { "UserId" });
-            DropIndex("dbo.NotificationsReceivers", new[] { "NotificationId" });
+            DropForeignKey("dbo.DeviceNotifications", "NotificationId", "dbo.Notifications");
+            DropForeignKey("dbo.Notifications", "ProductId", "dbo.Products");
+            DropForeignKey("dbo.DeviceNotifications", "DeviceId", "dbo.Devices");
             DropIndex("dbo.Memberships", new[] { "UserId" });
             DropIndex("dbo.Memberships", new[] { "GroupId" });
             DropIndex("dbo.Notifications", new[] { "ProductId" });
+            DropIndex("dbo.DeviceNotifications", new[] { "NotificationId" });
+            DropIndex("dbo.DeviceNotifications", new[] { "DeviceId" });
             DropIndex("dbo.Devices", new[] { "UserId" });
-            DropTable("dbo.NotificationsReceivers");
             DropTable("dbo.Memberships");
-            DropTable("dbo.Products");
-            DropTable("dbo.Notifications");
             DropTable("dbo.Groups");
             DropTable("dbo.Users");
+            DropTable("dbo.Products");
+            DropTable("dbo.Notifications");
+            DropTable("dbo.DeviceNotifications");
             DropTable("dbo.Devices");
         }
     }

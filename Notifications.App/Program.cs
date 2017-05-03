@@ -22,9 +22,9 @@ namespace Notifications.App
                 Product p0 = db.Products.Find(1);
                 p0.Price = 0.49;
                 db.SaveChanges();
-                NotificationsSender sender = new NotificationsSender(certificatesFolder, certificatesPassword);
-                NotificationTrigger trigger = new NotificationTrigger(sender, db.Notifications);
-                trigger.TriggerIfNeeded();
+                PushService service = PushService.Instance;
+                service.Init(certificatesFolder, certificatesPassword, db.Notifications);
+                service.Push();
 
                 // Restore the normal state
                 p0.Price = 0.99;

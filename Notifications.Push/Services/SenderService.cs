@@ -3,25 +3,15 @@ using System.Linq;
 
 namespace Notifications.Push
 {
-    public class NotificationsSender
+    class SenderService
     {
         private string certificatePath;
         private string certificatePassword;
 
-        public NotificationsSender(string certificatePath, string certificatePassword)
+        public SenderService(string certificatePath, string certificatePassword)
         {
             this.certificatePath = certificatePath;
             this.certificatePassword = certificatePassword;
-        }
-
-        /// <summary>
-        /// Send a notification to each device belonging to each member of the specified list.
-        /// </summary>
-        /// <param name="notification">The notification to send.</param>
-        /// <param name="users">The list of receivers</param>
-        public void Send(NotificationPayload notification, IEnumerable<IReceiver> users)
-        {
-            Send(notification, users.SelectMany(u => u.NotificationDevices).Distinct());
         }
 
         /// <summary>
@@ -29,15 +19,19 @@ namespace Notifications.Push
         /// </summary>
         /// <param name="notification">The notification to send.</param>
         /// <param name="devices">The list of devices to which send the notification.</param>
-        private void Send(NotificationPayload notification, IEnumerable<IDevice> devices)
+        public void Send(INotification notification, IEnumerable<IDevice> devices)
         {
+            NotificationBuildersFactory buildersFactory = NotificationBuildersFactory.Instance;
+            INotificationBuilder builder = buildersFactory.Create(notification.Builder);
+            NotificationPayload payload = builder.Build(notification);
             INotificationService notificationService;
             foreach (IDevice device in devices)
             {
                 notificationService = NotificationServiceFactory.Make(device.Type, certificatePath, certificatePassword);
                 if (notificationService != null)
                 {
-                    notificationService.Send(notification, device);
+                    notificationService.Send(payload, device);
+                    device.Notified(notification);
                 }
             }
         }

@@ -26,14 +26,17 @@ namespace Notifications.Data.Migrations
             Device d1 = new Device() { IsTablet = false, Type = 0, Owner = u1, IdentifierForVendor = "ciao1" };
             Device d2 = new Device() { IsTablet = false, Type = 0, Owner = u2, IdentifierForVendor = "ciao2" };
             Device d3 = new Device() { IsTablet = false, Type = 0, Owner = u3, IdentifierForVendor = "ciao", Token = "906ada2609ecad13f5cff1ae21d4723b559831400c9d97c0efb1b6701450cf3f" };
+            Device[] devices = new Device[]{d1, d2, d3};
             Product p0 = new Product() { Code = "0000", Color = "blue", Name = "life", Type = "purchase", Price = 0.99 };
             Product p1 = new Product() { Code = "0001", Color = "blue", Name = "powers", Type = "subscription", Price = 1.99 };
             Product p2 = new Product() { Code = "0002", Color = "red", Name = "bombs", Type = "purchase", Price = 0.49 };
             Product p3 = new Product() { Code = "0003", Color = "black", Name = "shield", Type = "purchase", Price = 0.49 };
-            Notification n0 = new Notification() { Builder = "product", Title = "Product {{product_name}} on sale", Message = "Click here to see the product", Product = p0, Condition = "low_price" };
-            n0.Users.Add(u1);
-            n0.Users.Add(u2);
-            n0.Users.Add(u3);
+            Notification n0 = new Notification() { Builder = "product", Title = "Product {{product_name}} on sale", Message = "Click here to see the product", Product = p0, Condition = "low_price", RefreshTime = "every_month" };
+            DateTime aLongTimeAgo = new DateTime(1970, 1, 1);
+            foreach(Device d in devices)
+            {
+                n0.DeviceNotifications.Add(new DeviceNotification() { Active = true, Notification = n0, NotifiedAt = aLongTimeAgo, Device = d });
+            }
             context.Groups.AddOrUpdate(g => g.Name, g1, g2);
             context.Users.AddOrUpdate(u => u.Name, u1, u2, u3);
             context.Devices.AddOrUpdate(d => d.IdentifierForVendor, d1, d2, d3);

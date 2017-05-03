@@ -33,11 +33,6 @@ namespace Notifications.Data
                 .HasMany(p => p.Notifications)
                 .WithRequired(n => n.Product)
                 .Map(m => m.MapKey("ProductId"));
-
-            modelBuilder.Entity<Notification>()
-                .HasMany(n => n.Users)
-                .WithMany(u => u.Notifications)
-                .Map(m => m.MapLeftKey("NotificationId").MapRightKey("UserId").ToTable("NotificationsReceivers"));
         }
     }
 }

@@ -88,19 +88,20 @@
     <Compile Include="INotification.cs" />
     <Compile Include="INotificationObject.cs" />
     <Compile Include="iOS\ApsNotification.cs" />
-    <Compile Include="IReceiver.cs" />
     <Compile Include="NotificationCondition\DefaultNotificationCondition.cs" />
     <Compile Include="NotificationCondition\INotificationCondition.cs" />
     <Compile Include="NotificationCondition\NotificationConditionsFactory.cs" />
+    <Compile Include="PushService.cs" />
     <Compile Include="Services\INotificationService.cs" />
     <Compile Include="iOS\IOSAlert.cs" />
     <Compile Include="iOS\IOSNotification.cs" />
     <Compile Include="iOS\IOSNotificationService.cs" />
-    <Compile Include="Sender.cs" />
+    <Compile Include="Services\SenderService.cs" />
     <Compile Include="NotificationPayload.cs" />
     <Compile Include="Services\NotificationServiceFactory.cs" />
-    <Compile Include="NotificationTrigger.cs" />
+    <Compile Include="Services\TriggerService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\RefreshTimeExtension.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
