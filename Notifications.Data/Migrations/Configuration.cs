@@ -25,13 +25,13 @@ namespace Notifications.Data.Migrations
             u3.Groups.Add(g1);
             Device d1 = new Device() { IsTablet = false, Type = 0, Owner = u1, IdentifierForVendor = "ciao1" };
             Device d2 = new Device() { IsTablet = false, Type = 0, Owner = u2, IdentifierForVendor = "ciao2" };
-            Device d3 = new Device() { IsTablet = false, Type = 0, Owner = u3, IdentifierForVendor = "ciao", Token = "906ada2609ecad13f5cff1ae21d4723b559831400c9d97c0efb1b6701450cf3f" };
+            Device d3 = new Device() { IsTablet = false, Type = 0, Owner = u3, IdentifierForVendor = "ciao", Token = "b741ef8066dd1454a2a552ac1916f0408a8243525f5b76fe1a857c42ab969c3b" };
             Device[] devices = new Device[]{d1, d2, d3};
             Product p0 = new Product() { Code = "0000", Color = "blue", Name = "life", Type = "purchase", Price = 0.99 };
             Product p1 = new Product() { Code = "0001", Color = "blue", Name = "powers", Type = "subscription", Price = 1.99 };
             Product p2 = new Product() { Code = "0002", Color = "red", Name = "bombs", Type = "purchase", Price = 0.49 };
             Product p3 = new Product() { Code = "0003", Color = "black", Name = "shield", Type = "purchase", Price = 0.49 };
-            Notification n0 = new Notification() { Builder = "product", Title = "Product {{product_name}} on sale", Message = "Click here to see the product", Product = p0, Condition = "low_price", RefreshTime = "every_month" };
+            Notification n0 = new Notification() { Builder = "product", Title = "Product {{product_name}} on sale", Message = "Click here to see the product", Product = p0, Condition = "low_price", RefreshTime = "", Action = "category:toyota" };
             DateTime aLongTimeAgo = new DateTime(1970, 1, 1);
             foreach(Device d in devices)
             {

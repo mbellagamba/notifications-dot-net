@@ -22,12 +22,6 @@ namespace Notifications.Push
 
             // Configuration (NOTE: .pfx can also be used here)
             ApnsConfiguration config = new ApnsConfiguration(ApnsConfiguration.ApnsServerEnvironment.Sandbox, certificatePath, certificatePassword);
-            ApnsServiceBroker apnsBroker = new ApnsServiceBroker(config);
-
-            apnsBroker.OnNotificationSucceeded += this.onSuccess;
-            apnsBroker.OnNotificationFailed += this.onFailure;
-
-            apnsBroker.Start();
             IOSNotification payload = new IOSNotification(notification);
             ApnsNotification apnsNotification = new ApnsNotification
             {
@@ -35,8 +29,14 @@ namespace Notifications.Push
                 Payload = JObject.FromObject(payload)
             };
             Console.WriteLine(apnsNotification.ToString());
-            apnsBroker.QueueNotification(apnsNotification);
 
+            ApnsServiceBroker apnsBroker = new ApnsServiceBroker(config);
+
+            apnsBroker.OnNotificationSucceeded += this.onSuccess;
+            apnsBroker.OnNotificationFailed += this.onFailure;
+
+            apnsBroker.Start();
+            apnsBroker.QueueNotification(apnsNotification);
             apnsBroker.Stop();
         }
 

@@ -68,6 +68,12 @@ namespace Notifications.Push
             {
                 this.Info = info;
             }
+            // Set the aps category
+            string category = Category(notification.Action);
+            if (!string.IsNullOrEmpty(category))
+            {
+                this.Aps.Category = category;
+            }
         }
 
         private Dictionary<string, object> GenerateInfo(NotificationPayload payload)
@@ -82,6 +88,33 @@ namespace Notifications.Push
                 info.Add("action", payload.Action);
             }
             return info.Count > 0 ? info : null;
+        }
+
+        /// <summary>
+        /// Parse the action if contains a category and returns the category. The action format should be: "category:Category Name,otherKey:other value"
+        /// </summary>
+        /// <param name="action">The action from the notification</param>
+        /// <returns>The category name if the action is valid, otherwise an empty string.</returns>
+        private string Category(string action)
+        {
+            string category;
+            if (action != null && action.Contains("category"))
+            {
+                try
+                {
+                    List<string> pairs = new List<string>(action.Split(','));
+                    category = pairs.Find(s => s.StartsWith("category")).Split(':')[1];
+                }
+                catch
+                {
+                    category = "";
+                }
+            }
+            else
+            {
+                category = "";
+            }
+            return category;
         }
 
     }

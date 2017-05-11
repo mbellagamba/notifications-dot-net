@@ -53,5 +53,12 @@ namespace Notifications.Push
             }
         }
 
+        /// <exception cref="InvalidOperationException">Thrown if the <code>PushService</code> is not initialized.</exception>
+        public void Push(INotification notification, IEnumerable<IDevice> devices)
+        {
+            if (!isInit) throw new InvalidOperationException("Could not push notification if the push service was not initialized. Call the method 'Init' before 'Push'.");
+            sender.Send(notification, devices);
+        }
+
     }
 }
