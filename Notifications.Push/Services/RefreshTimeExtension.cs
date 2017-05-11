@@ -8,7 +8,7 @@ namespace Notifications.Push
 {
     enum RefreshTime
     {
-        EVERY_MONTH, EVERY_DAY
+        EVERY_TIME, EVERY_MONTH, EVERY_DAY
     }
 
     static class RefreshTimeCheckService

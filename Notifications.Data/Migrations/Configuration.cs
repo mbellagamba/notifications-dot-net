@@ -31,7 +31,7 @@ namespace Notifications.Data.Migrations
             Product p1 = new Product() { Code = "0001", Color = "blue", Name = "powers", Type = "subscription", Price = 1.99 };
             Product p2 = new Product() { Code = "0002", Color = "red", Name = "bombs", Type = "purchase", Price = 0.49 };
             Product p3 = new Product() { Code = "0003", Color = "black", Name = "shield", Type = "purchase", Price = 0.49 };
-            Notification n0 = new Notification() { Builder = "product", Title = "Product {{product_name}} on sale", Message = "Click here to see the product", Product = p0, Condition = "low_price", RefreshTime = "", Action = "category:toyota" };
+            Notification n0 = new Notification() { Builder = "product", Title = "Product {{product_name}} on sale", Message = "Click here to see the product", Product = p0, Condition = "low_price", RefreshTime = "", Action = "category:0" };
             DateTime aLongTimeAgo = new DateTime(1970, 1, 1);
             foreach(Device d in devices)
             {
