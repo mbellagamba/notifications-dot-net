@@ -2,6 +2,7 @@
 using PushSharp.Apple;
 using PushSharp.Core;
 using System;
+using System.Collections.Generic;
 
 namespace Notifications.Push
 {
@@ -21,7 +22,7 @@ namespace Notifications.Push
             if (string.IsNullOrEmpty(device.Token)) return;
 
             // Configuration (NOTE: .pfx can also be used here)
-            ApnsConfiguration config = new ApnsConfiguration(ApnsConfiguration.ApnsServerEnvironment.Sandbox, certificatePath, certificatePassword);
+            ApnsConfiguration config = new ApnsConfiguration(ApnsConfiguration.ApnsServerEnvironment.Production, certificatePath, certificatePassword);
             IOSNotification payload = new IOSNotification(notification);
             ApnsNotification apnsNotification = new ApnsNotification
             {
@@ -37,6 +38,31 @@ namespace Notifications.Push
 
             apnsBroker.Start();
             apnsBroker.QueueNotification(apnsNotification);
+            apnsBroker.Stop();
+        }
+
+        public void Send(NotificationPayload notification, IEnumerable<IDevice> devices)
+        {
+            ApnsConfiguration config = new ApnsConfiguration(ApnsConfiguration.ApnsServerEnvironment.Production, certificatePath, certificatePassword);
+            IOSNotification payload = new IOSNotification(notification);
+            ApnsServiceBroker apnsBroker = new ApnsServiceBroker(config);
+
+            apnsBroker.OnNotificationSucceeded += this.onSuccess;
+            apnsBroker.OnNotificationFailed += this.onFailure;
+
+            apnsBroker.Start();
+            ApnsNotification apnsNotification = new ApnsNotification
+            {
+                Payload = JObject.FromObject(payload)
+            };
+
+            foreach (var device in devices)
+            {
+                apnsNotification.DeviceToken = device.Token;
+                Console.WriteLine(apnsNotification.ToString());
+                apnsBroker.QueueNotification(apnsNotification);
+            }
+
             apnsBroker.Stop();
         }
 

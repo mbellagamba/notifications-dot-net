@@ -55,6 +55,7 @@ namespace Notifications.Push
             IOSAlert alert = new IOSAlert()
             {
                 Title = notification.Title,
+                LaunchImage = notification.Image,
                 Body = notification.Message
             };
             ApsNotification aps = new ApsNotification()

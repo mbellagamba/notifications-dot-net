@@ -27,9 +27,9 @@ namespace Notifications.Push
         /// <param name="certificatePath">The path to the certificate.</param>
         /// <param name="certificatePassword">The certificate password.</param>
         /// <param name="notifications">The list of notifications.</param>
-        public void Init(string certificatePath, string certificatePassword, IEnumerable<INotification> notifications)
+        public void Init(string certificatePath, string certificatePassword, string senderId, string senderAuthToken, IEnumerable<INotification> notifications)
         {
-            sender = new SenderService(certificatePath, certificatePassword);
+            sender = new SenderService(certificatePath, certificatePassword, senderId, senderAuthToken);
             trigger = new TriggerService(notifications);
             isInit = true;
         }

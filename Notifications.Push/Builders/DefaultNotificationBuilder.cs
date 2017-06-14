@@ -8,6 +8,7 @@
             {
                 Title = notification.Title,
                 Message = notification.Message,
+                Image = notification.Image,
                 ObjectId = notification.Object.Id
             };
 

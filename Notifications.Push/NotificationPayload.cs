@@ -13,6 +13,7 @@ namespace Notifications.Push
         public string Message { get; set; }
         public string Sound { get; set; }
         public string Action { get; set; }
+        public string Image { get; set; }
         public int ObjectId { get; set; }
 
         public override string ToString()

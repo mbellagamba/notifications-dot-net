@@ -11,6 +11,7 @@ namespace Notifications.Push
         string Builder { get; }
         string Action { get; }
         string Sound { get; }
+        string Image { get; }
         string RefreshTime { get; }
         INotificationObject Object { get; }
         IEnumerable<IDevice> NotifiableDevices { get; }

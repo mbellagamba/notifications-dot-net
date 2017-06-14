@@ -19,18 +19,23 @@ namespace Notifications.App
 
             using (var db = new NotificationsModel())
             {
-                Product p0 = db.Products.Find(1);
-                p0.Price = 0.49;
-                db.SaveChanges();
-                PushService service = PushService.Instance;
-                service.Init(certificatesFolder, certificatesPassword, db.Notifications);
-                service.Push();
+                char input;
+                do
+                {
+                    Product p0 = db.Products.Find(1);
+                    p0.Price = 0.49;
+                    db.SaveChanges();
+                    PushService service = PushService.Instance;
+                    service.Init(certificatesFolder, certificatesPassword, "", "", db.Notifications);
+                    service.Push();
 
-                // Restore the normal state
-                p0.Price = 0.99;
-                db.SaveChanges();
+                    // Restore the normal state
+                    p0.Price = 0.99;
+                    db.SaveChanges();
+                    input = Console.ReadKey().KeyChar;
+                } while (input == 'c');
             }
-            Console.ReadKey();
+            
         }
 
         private static void InitFactories()

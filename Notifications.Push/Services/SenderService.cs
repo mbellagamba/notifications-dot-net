@@ -7,11 +7,15 @@ namespace Notifications.Push
     {
         private string certificatePath;
         private string certificatePassword;
+        private string senderId;
+        private string senderAuthToken;
 
-        public SenderService(string certificatePath, string certificatePassword)
+        public SenderService(string certificatePath, string certificatePassword, string senderId, string senderAuthToken)
         {
             this.certificatePath = certificatePath;
             this.certificatePassword = certificatePassword;
+            this.senderId = senderId;
+            this.senderAuthToken = senderAuthToken;
         }
 
         /// <summary>
@@ -27,7 +31,7 @@ namespace Notifications.Push
             INotificationService notificationService;
             foreach (IDevice device in devices)
             {
-                notificationService = NotificationServiceFactory.Make(device.Type, certificatePath, certificatePassword);
+                notificationService = NotificationServiceFactory.Make(device.Type, certificatePath, certificatePassword, senderId, senderAuthToken);
                 if (notificationService != null)
                 {
                     notificationService.Send(payload, device);
@@ -35,47 +39,5 @@ namespace Notifications.Push
                 }
             }
         }
-
-        //private static void SendAndroidNotification(string udid, string token, NOTIFICATION_TYPE eNotificationType, int iObjId, int notificationId, string message = "")
-        //{
-
-        //    string GoogleAppID = "AIzaSyDakRM-dGqP1Us-4JiF1Xsn0El6i6qXX8E";
-        //    var SENDER_ID = "2523660281";
-        //    WebRequest tRequest;
-        //    tRequest = WebRequest.Create("https://android.googleapis.com/gcm/send");
-        //    tRequest.Method = "post";
-        //    tRequest.ContentType = " application/x-www-form-urlencoded;charset=UTF-8";
-        //    tRequest.Headers.Add(string.Format("Authorization: key={0}", GoogleAppID));
-
-        //    tRequest.Headers.Add(string.Format("Sender: id={0}", SENDER_ID));
-
-        //    string postData = "collapse_key=score_update&time_to_live=108&delay_while_idle=1&data.message=" + message +
-        //        "&data.title=" + message + 
-        //        "&data.time=" + System.DateTime.Now.ToString() +
-        //        "&data.type=" + eNotificationType.GetHashCode() +
-        //        "&data.objId=" + iObjId.ToString() +
-        //        "&data.notificationId=" + notificationId.ToString() +
-        //        "&registration_id=" + token + "";
-        //    Console.WriteLine(postData);
-        //    Byte[] byteArray = Encoding.UTF8.GetBytes(postData);
-        //    tRequest.ContentLength = byteArray.Length;
-
-        //    Stream dataStream = tRequest.GetRequestStream();
-        //    dataStream.Write(byteArray, 0, byteArray.Length);
-        //    dataStream.Close();
-
-        //    WebResponse tResponse = tRequest.GetResponse();
-
-        //    dataStream = tResponse.GetResponseStream();
-
-        //    StreamReader tReader = new StreamReader(dataStream);
-
-        //    String sResponseFromServer = tReader.ReadToEnd();
-        //    //LogBLL.WriteInfo("NOTIFICA ANDROID", sResponseFromServer);
-
-        //    tReader.Close();
-        //    dataStream.Close();
-        //    tResponse.Close();
-        //}
     }
 }

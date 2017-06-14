@@ -12,6 +12,7 @@ namespace Notifications.App
             {
                 Title = title,
                 Message = notification.Message,
+                Image = notification.Image,
                 ObjectId = notification.Object.Id
             };
 

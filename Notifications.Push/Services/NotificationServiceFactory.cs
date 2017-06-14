@@ -1,25 +1,33 @@
 ﻿namespace Notifications.Push
 {
-    enum OS_TYPE
+    enum OsType
     {
-        IOS = 0,
-        ANDROID = 1
+        Ios = 0,
+        Android = 1
     }
 
     class NotificationServiceFactory
     {
-        public static INotificationService Make(int osType, string certificatesFolderPath, string certificatesPassword)
+        /// <summary>
+        /// Create a notification
+        /// </summary>
+        /// <param name="osType"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public static INotificationService Make(int osType, params string[] args)
         {
-            OS_TYPE os = (OS_TYPE)osType;
+            OsType os = (OsType)osType;
             INotificationService service;
             switch (os)
             {
-                case OS_TYPE.IOS:
-                    if (string.IsNullOrEmpty(certificatesFolderPath)) return null;
-                    service = new IOSNotificationService(certificatesFolderPath, certificatesPassword);
+                case OsType.Ios:
+                    if (args.Length < 2) return null;
+                    service = new IOSNotificationService(args[0], args[1]);
                     break;
-                case OS_TYPE.ANDROID:
-                    // TODO: implement the AndroidNotificationService and return it.
+                case OsType.Android:
+                    if (args.Length < 4) return null;
+                    service = new AndroidNotificationService(args[2], args[3]);
+                    break;
                 default:
                     service = null;
                     break;
